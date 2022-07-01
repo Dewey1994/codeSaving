@@ -3,7 +3,8 @@ import re
 import codecs
 
 
-stop_path = "/Users/dewey/PycharmProjects/codeSaving/nlp/data/stopwords/stopwords.txt"
+# stop_path = "/Users/dewey/PycharmProjects/codeSaving/nlp/data/stopwords/stopwords.txt"
+stop_path = r"C:\Users\40169\PycharmProjects\codeSaving\nlp\data\stopwords\stopwords.txt"
 
 stop = set()
 fr = codecs.open(stop_path, 'r', 'utf-8')
