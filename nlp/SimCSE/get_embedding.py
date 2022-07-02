@@ -84,7 +84,7 @@ def train(model, train_loader, dev_loader, optimizer, args):
             last_improve = step
 
 
-def evaluate(model, dataloader, device):
+def evaluate(model, dataloader, device,test_data):
     model.eval()
     sim_tensor = torch.tensor([], device=device)
     label_array = np.array([])
@@ -105,6 +105,10 @@ def evaluate(model, dataloader, device):
             sim_tensor = torch.cat((sim_tensor, sim), dim=0)
             label_array = np.append(label_array, np.array(label))
     # corrcoef
+    with open('dev_embed.txt', 'w', encoding='utf-8') as f:
+        for i in sim_tensor.cpu().numpy():
+            f.write(str(i))
+            f.write('\n')
     return spearmanr(label_array, sim_tensor.cpu().numpy()).correlation
 
 
@@ -228,18 +232,18 @@ def main(args):
                                       num_workers=args.num_workers)
         dev_data = load_eval_data(tokenizer, args, 'dev')
         dev_dataset = TestDataset(dev_data, tokenizer, max_len=args.max_len)
-        dev_dataloader = DataLoader(dev_dataset, batch_size=args.batch_size_eval, shuffle=False,
+        dev_dataloader = DataLoader(dev_dataset, batch_size=args.batch_size_eval, shuffle=True,
                                     num_workers=args.num_workers)
         optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr)
         train(model, train_dataloader, dev_dataloader, optimizer, args)
     if args.do_predict:
-        test_data = load_eval_data(tokenizer, args, 'test')
+        test_data = load_eval_data(tokenizer, args, 'dev')
         test_dataset = TestDataset(test_data, tokenizer, max_len=args.max_len)
-        test_dataloader = DataLoader(test_dataset, batch_size=args.batch_size_eval, shuffle=True,
+        test_dataloader = DataLoader(test_dataset, batch_size=args.batch_size_eval, shuffle=False,
                                      num_workers=args.num_workers)
         model.load_state_dict(torch.load(join(args.output_path, 'simcse.pt')))
         model.eval()
-        corrcoef = evaluate(model, test_dataloader, args.device)
+        corrcoef = evaluate(model, test_dataloader, args.device,test_data)
         logger.info('testset corrcoef:{}'.format(corrcoef))
 
 
@@ -265,7 +269,7 @@ if __name__ == '__main__':
                         default='cls', help='pooler to use')
     parser.add_argument("--train_mode", type=str, default='supervise', choices=['unsupervise', 'supervise'], help="unsupervise or supervise")
     parser.add_argument("--overwrite_cache", action='store_true', default=False, help="overwrite cache")
-    parser.add_argument("--do_train", action='store_true', default=True)
+    parser.add_argument("--do_train", action='store_true', default=False)
     parser.add_argument("--do_predict", action='store_true', default=True)
 
     args = parser.parse_args()
