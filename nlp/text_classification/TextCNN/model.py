@@ -16,7 +16,10 @@ class TextCNN(nn.Module):
 
     def forward(self, x):
         x = self.embed(x).unsqueeze(1)
+        # x-shape: [Batch_size,1,seq_length, embed_dim]
         x = [F.relu(conv(x)).squeeze(3) for conv in self.conv]
+        # channel 从1变成kernel_sizes，对后两维进行卷积，kernel-shape为(设定的kernel_size，embed_dim)
+        # 对embed_dim直接压缩到1维，对seq_length则模拟n-gram操作
         x = [F.max_pool1d(i, i.size(2)).squeeze(2) for i in x]
         x = self.dropout(torch.cat(x,1))
         logits = self.fc(x)

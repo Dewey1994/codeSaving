@@ -1,8 +1,5 @@
 import pandas as pd
 import os
-import jieba
-
-from nlp.bm25 import utils, bm25
 
 sts_path = r'/nlp/data/STS-B/raw'
 dirs = os.listdir(sts_path)

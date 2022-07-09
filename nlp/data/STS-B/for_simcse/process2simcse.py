@@ -2,7 +2,7 @@ import pandas as pd
 import os
 import jieba
 
-from nlp.bm25 import utils, bm25
+from nlp.text_similarity.bm25 import utils, bm25
 
 sts_path = r'C:\Users\40169\PycharmProjects\codeSaving\nlp\data\STS-B\raw'
 dirs = os.listdir(sts_path)

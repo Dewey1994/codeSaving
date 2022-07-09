@@ -2,7 +2,7 @@ import math
 import jieba
 
 # 测试文本
-from nlp.bm25 import utils
+from nlp.text_similarity.bm25 import utils
 
 text = '''
 自然语言处理是计算机科学领域与人工智能领域中的一个重要方向。

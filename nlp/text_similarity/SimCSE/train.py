@@ -10,7 +10,7 @@ import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader
 
 from dataset import TrainDataset, TestDataset
-from model import SimcseModel, simcse_unsup_loss, simcse_sup_loss
+from model import SimcseModel, simcse_unsup_loss, simcse_sup_loss, margin_ranking_loss
 from transformers import BertModel, BertConfig, BertTokenizer
 import os
 from os.path import join

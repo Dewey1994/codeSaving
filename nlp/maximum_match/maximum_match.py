@@ -1,8 +1,8 @@
 class Maximum_match:
     def __init__(self, dict_path):
-        self.mp = set(i.strip() for i in open(dict_path,'r',encoding='utf-8'))
+        self.mp = set(i.strip() for i in open(dict_path, 'r', encoding='utf-8'))
         self.match_res = []
-        self.max_length = len(max(self.mp,key=len))
+        self.max_length = len(max(self.mp, key=len))
 
     def maximum_match(self, sentence):
         sent_len = len(sentence)
@@ -11,7 +11,7 @@ class Maximum_match:
             while divide not in self.mp:
                 if len(divide) == 1:
                     break
-                divide = divide[:len(divide)-1]
+                divide = divide[:len(divide) - 1]
             self.match_res.append(divide)
             sentence = sentence[len(divide):]
             sent_len = len(sentence)
@@ -31,8 +31,8 @@ class Maximum_match:
         return self.match_res[::-1]
 
 
-if __name__ == '__main__':
-    ms = Maximum_match("/nlp/maximum_match/dict.txt")
-    res = ms.reverse_maximum_match("研究生命的起源")
-    print(res)
 
+if __name__ == '__main__':
+    ms = Maximum_match("dict.txt")
+    res = ms.maximum_match("研究生命的起源")
+    print(res)

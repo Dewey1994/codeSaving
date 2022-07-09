@@ -21,6 +21,7 @@ class SimcseModel(nn.Module):
         # self.bert = SimBertModel.from_pretrained(pretrained_model, config=config)
         self.pooling = pooling
 
+
     def forward(self, input_ids, attention_mask, token_type_ids):
         out = self.bert(input_ids, attention_mask, token_type_ids, output_hidden_states=True, return_dict=True)
         # return out[1]
@@ -77,8 +78,32 @@ def simcse_sup_loss(y_pred, device, lamda=0.05):
     loss = F.cross_entropy(similarities, y_true)
     return loss
 
+def margin_ranking_loss(y_pred, device, lamda=0.05):
+    """
+    有监督损失函数
+    todo 重写model
+    """
+
+    similarities = F.cosine_similarity(y_pred.unsqueeze(0), y_pred.unsqueeze(1), dim=2)
+    row = torch.arange(0, y_pred.shape[0], 3)
+    col = torch.arange(0, y_pred.shape[0])
+    col = col[col % 3 != 0]
+
+    similarities = similarities[row, :]
+    similarities = similarities[:, col]
+    # similarities = similarities / lamda
+    bs = similarities.size(0)
+    pos_sim = torch.mean(similarities[:,:bs],dim=1)
+    neg_sim =torch.mean(similarities[:,bs:],dim=1)
+    pos_sim = F.sigmoid(pos_sim)
+    neg_sim = F.sigmoid(neg_sim)
+    labels = torch.ones(similarities.size(0),device=device)
+    # y_true = torch.arange(0, len(col), 2, device=device)
+    loss = F.margin_ranking_loss(pos_sim,neg_sim, labels)
+    return loss
+
 
 if __name__ == '__main__':
-    y_pred = torch.rand((30 ,16))
-    loss = simcse_sup_loss(y_pred, 'cpu', lamda=0.05)
+    y_pred = torch.rand((96 ,768))
+    loss = margin_ranking_loss(y_pred, 'cuda', lamda=0.05)
     print(loss)
