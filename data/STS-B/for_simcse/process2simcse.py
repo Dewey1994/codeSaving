@@ -4,7 +4,7 @@ import jieba
 
 from nlp.text_similarity.bm25 import utils, bm25
 
-sts_path = r'C:\Users\40169\PycharmProjects\codeSaving\nlp\data\STS-B\raw'
+sts_path = r'/data/STS-B/raw'
 dirs = os.listdir(sts_path)
 for path in dirs:
     with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), sts_path, path), 'r', encoding='utf-8') as f:

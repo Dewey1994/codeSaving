@@ -10,10 +10,10 @@ import pandas as pd
 #
 # X_train, X_test, y_train,y_test = train_test_split(X,y,
 #                                                    train_size=0.875,test_size=0.125,random_state=188)
-df_train = pd.read_csv(r"C:\Users\40169\PycharmProjects\codeSaving\nlp\data\STS-B\for_lr\script\train-lr.csv")
+df_train = pd.read_csv(r"/data\STS-B\for_lr\script\train-lr.csv")
 df_train = df_train.drop(columns='data')
 df_train = df_train.drop(columns='label')
-df_test = pd.read_csv(r"C:\Users\40169\PycharmProjects\codeSaving\nlp\data\STS-B\for_lr\script\test-lr.csv")
+df_test = pd.read_csv(r"/data\STS-B\for_lr\script\test-lr.csv")
 df_test = df_test.drop(columns='data')
 df_test = df_test.drop(columns='label')
 

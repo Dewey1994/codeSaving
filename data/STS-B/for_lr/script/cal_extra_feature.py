@@ -40,9 +40,9 @@ def get_word_diff(sten1, sten2):
 
 
 if __name__ == '__main__':
-    train_data_path = r"C:\Users\40169\PycharmProjects\codeSaving\nlp\data\STS-B\for_lr\cnsd-sts-train.csv"
-    dev_data_path = r"C:\Users\40169\PycharmProjects\codeSaving\nlp\data\STS-B\for_lr\cnsd-sts-dev.csv"
-    test_data_path = r"C:\Users\40169\PycharmProjects\codeSaving\nlp\data\STS-B\for_lr\cnsd-sts-test.csv"
+    train_data_path = r"/data/STS-B/for_lr/cnsd-sts-train.csv"
+    dev_data_path = r"/data/STS-B/for_lr/cnsd-sts-dev.csv"
+    test_data_path = r"/data/STS-B/for_lr/cnsd-sts-test.csv"
     paths = [train_data_path, dev_data_path, test_data_path]
 
     for i, p in enumerate(paths):
